@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CourtReserver</string>
+    <string name="title_home">Courts</string>
+    <string name="title_dashboard">Map</string>
+    <string name="title_notifications">Profile</string>
+    <string name="log_out">Log out</string>
+    <string name="select_date">Select date for reservation</string>
+    <string name="start_hour">Start hour</string>
+    <string name="end_hour">End hour</string>
+    <string name="price">Price</string>
+    <string name="reserve">Reserve</string>
+    <string name="cancel">Cancel</string>
+</resources>

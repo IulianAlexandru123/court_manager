@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_courts">
+
+    <fragment
+        android:id="@+id/navigation_courts"
+        android:name="com.utcluj.courtreserver.ui.courts.CourtsFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_courts" >
+        <action
+            android:id="@+id/action_navigation_courts_to_courtDetailsFragment"
+            app:destination="@id/courtDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.utcluj.courtreserver.ui.map.MapFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_navigation_map_to_courtDetailsFragment"
+            app:destination="@id/courtDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.utcluj.courtreserver.ui.profile.ProfileFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/courtDetailsFragment"
+        android:name="com.utcluj.courtreserver.ui.court_details.CourtDetailsFragment"
+        android:label="CourtDetailsFragment" >
+        <argument
+            android:name="courtDto"
+            app:argType="com.utcluj.courtreserver.dtos.CourtDTO" />
+    </fragment>
+</navigation>

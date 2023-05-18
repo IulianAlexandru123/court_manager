@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "449871972986",
+    "project_id": "court-reserve",
+    "storage_bucket": "court-reserve.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449871972986:android:5e2a1a801a32e2af3689c3",
+        "android_client_info": {
+          "package_name": "com.utcluj.courtreserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449871972986-s2c545jdklt9no27e6bkpad4nrpkhkor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIb-GWry1tPguTqd-tRjTrB_hQt0E3_V0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449871972986-s2c545jdklt9no27e6bkpad4nrpkhkor.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
