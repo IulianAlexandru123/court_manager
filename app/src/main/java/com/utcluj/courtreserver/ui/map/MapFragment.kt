@@ -1,7 +1,6 @@
 package com.utcluj.courtreserver.ui.map
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +15,12 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.utcluj.courtreserver.R
 import com.utcluj.courtreserver.databinding.FragmentMapBinding
-import com.utcluj.courtreserver.ui.courts.CourtsViewModel
+import com.utcluj.courtreserver.ui.admin_courts.AdminCourtsViewModel
 
 
 class MapFragment : Fragment(), OnMarkerClickListener {
 
-    private val courtsViewModel: CourtsViewModel by activityViewModels()
+    private val courtsViewModel: AdminCourtsViewModel by activityViewModels()
 
     private var _binding: FragmentMapBinding? = null
 

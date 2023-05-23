@@ -57,8 +57,16 @@ class AuthenticationActivity : AppCompatActivity() {
     }
 
     private fun startMainActivity() {
-        val mainActivityIntent = Intent(this, MainActivity::class.java)
-        startActivity(mainActivityIntent)
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        db.collection("user_roles").document(currentUserId).get().addOnSuccessListener {
+            if(it.getBoolean("isAdmin") == true) {
+                val mainActivityIntent = Intent(this, AdminMainActivity::class.java)
+                startActivity(mainActivityIntent)
+            } else {
+                val mainActivityIntent = Intent(this, MainActivity::class.java)
+                startActivity(mainActivityIntent)
+            }
+        }
     }
 
     private fun createSignInIntent() {

@@ -2,7 +2,6 @@ package com.utcluj.courtreserver.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.utcluj.courtreserver.AuthenticationActivity
 
 import com.utcluj.courtreserver.databinding.FragmentProfileBinding
 import com.utcluj.courtreserver.dtos.ReservationOverallDetailsDTO
-import com.utcluj.courtreserver.ui.courts.CourtsAdapter
-import com.utcluj.courtreserver.ui.courts.CourtsFragmentDirections
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
