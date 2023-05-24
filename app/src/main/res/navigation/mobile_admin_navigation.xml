@@ -16,9 +16,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.utcluj.courtreserver.ui.profile.ProfileFragment"
-        android:label="@string/title_notifications"
+        android:id="@+id/navigation_reservations"
+        android:name="com.utcluj.courtreserver.ui.admin_reservations.AdminReservationsFragment"
+        android:label="@string/title_reservations"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/createCourtDetailsFragment"

@@ -1,4 +1,4 @@
-package com.utcluj.courtreserver.ui.profile
+package com.utcluj.courtreserver.ui.admin_reservations
 
 import android.content.Context
 import android.location.Address
@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.utcluj.courtreserver.databinding.ItemAdminReservationBinding
 import com.utcluj.courtreserver.databinding.ItemReservationBinding
 import com.utcluj.courtreserver.dtos.CourtDTO
 import com.utcluj.courtreserver.dtos.ReservationDTO
@@ -20,7 +22,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
-class ReservationsAdapter : RecyclerView.Adapter<ReservationsAdapter.ItemReservationViewHolder>() {
+class AdminReservationsAdapter :
+    RecyclerView.Adapter<AdminReservationsAdapter.ItemReservationViewHolder>() {
 
     private var reservationList: List<ReservationOverallDetailsDTO> = listOf()
 
@@ -34,10 +37,16 @@ class ReservationsAdapter : RecyclerView.Adapter<ReservationsAdapter.ItemReserva
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ReservationsAdapter.ItemReservationViewHolder {
+    ): AdminReservationsAdapter.ItemReservationViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        return ItemReservationViewHolder(ItemReservationBinding.inflate(inflater, parent, false))
+        return ItemReservationViewHolder(
+            ItemAdminReservationBinding.inflate(
+                inflater,
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount() = this.reservationList.size
@@ -52,24 +61,18 @@ class ReservationsAdapter : RecyclerView.Adapter<ReservationsAdapter.ItemReserva
             date.text = reservation.date
             startHour.text = reservation.startHour
             endHour.text = reservation.endHour
+            customerTextView.text = "Customer ${reservation.customerUuid}"
 
             cancelButton.apply {
                 isEnabled = reservation.isCancelButtonAvailable()
                 setOnClickListener {
-                    callBack?.invoke(Event.DeleteReservation(reservation.uuid))
-                }
-            }
-
-            shareButton.apply {
-                isEnabled = true
-                setOnClickListener {
-                    callBack?.invoke(Event.ShareReservation(reservation))
+                    callBack?.invoke(Event(reservation.uuid))
                 }
             }
         }
     }
 
-    inner class ItemReservationViewHolder(binding: ItemReservationBinding) :
+    inner class ItemReservationViewHolder(binding: ItemAdminReservationBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val courtName = binding.courtNameTextView
         val address = binding.addressTextView
@@ -77,7 +80,7 @@ class ReservationsAdapter : RecyclerView.Adapter<ReservationsAdapter.ItemReserva
         val startHour = binding.startHourTextView
         val endHour = binding.endHourTextView
         val cancelButton = binding.cancelButton
-        val shareButton = binding.shareButton
+        val customerTextView = binding.userNameTextView
     }
 
     private fun CourtDTO.getAddress(context: Context): Address {
@@ -94,8 +97,5 @@ class ReservationsAdapter : RecyclerView.Adapter<ReservationsAdapter.ItemReserva
         return daysBetween >= 1
     }
 
-    abstract class Event {
-        data class DeleteReservation(val reservationId: String) : Event()
-        data class ShareReservation(val reservation: ReservationDTO) : Event()
-    }
+    data class Event(val reservationId: String)
 }

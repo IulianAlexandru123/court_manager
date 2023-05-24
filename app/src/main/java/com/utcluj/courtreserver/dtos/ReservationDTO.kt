@@ -9,5 +9,6 @@ data class ReservationDTO(
     val courtUuid: String,
     val date: String,
     val startHour: String,
-    val endHour: String
+    val endHour: String,
+    val customerUuid: String
 ) : Parcelable

@@ -1,4 +1,4 @@
-package com.utcluj.courtreserver.ui.profile
+package com.utcluj.courtreserver.ui.admin_reservations
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,17 +13,16 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.utcluj.courtreserver.AuthenticationActivity
 
 import com.utcluj.courtreserver.databinding.FragmentProfileBinding
-import com.utcluj.courtreserver.dtos.ReservationDTO
 import com.utcluj.courtreserver.dtos.ReservationOverallDetailsDTO
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-class ProfileFragment : Fragment() {
+class AdminReservationsFragment : Fragment() {
 
-    private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val reservationsViewModel: AdminReservationsViewModel by activityViewModels()
     private var _binding: FragmentProfileBinding? = null
-    private lateinit var reservationsAdapter: ReservationsAdapter
+    private lateinit var reservationsAdapter: AdminReservationsAdapter
 
 
     private val binding get() = _binding!!
@@ -51,12 +50,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initViews() {
-        profileViewModel.text.observe(viewLifecycleOwner) {
+        reservationsViewModel.text.observe(viewLifecycleOwner) {
             binding.textUserName.text = it
         }
 
         binding.logOutButton.setOnClickListener {
-            profileViewModel.logOutUser();
+            reservationsViewModel.logOutUser();
             startAuthActivity()
         }
     }
@@ -64,23 +63,16 @@ class ProfileFragment : Fragment() {
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                profileViewModel.reservationList.combine(profileViewModel.courtList) { res, crt ->
+                reservationsViewModel.reservationList.combine(reservationsViewModel.courtList) { res, crt ->
                     res.mapNotNull { reservation ->
                         val court = crt.firstOrNull { it.uuid == reservation.courtUuid }
                             ?: return@mapNotNull null
                         ReservationOverallDetailsDTO(reservation, court)
                     }
                 }.collectLatest {
-                    reservationsAdapter = ReservationsAdapter()
+                    reservationsAdapter = AdminReservationsAdapter()
                     reservationsAdapter.callBack = {
-                        when (it) {
-                            is ReservationsAdapter.Event.DeleteReservation -> profileViewModel.deleteReservation(
-                                it.reservationId
-                            )
-
-                            is ReservationsAdapter.Event.ShareReservation -> shareReservation(it.reservation)
-                        }
-
+                        reservationsViewModel.deleteReservation(it.reservationId)
                     }
                     binding.reservationsRecyclerView.apply {
                         adapter = reservationsAdapter
@@ -88,8 +80,8 @@ class ProfileFragment : Fragment() {
                     }
                 }
 
-                profileViewModel.deleteReservationResult.collectLatest {
-                    if (it) {
+                reservationsViewModel.deleteReservationResult.collectLatest {
+                    if(it) {
                         performInitialServerRequest()
                     }
                 }
@@ -97,24 +89,9 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun shareReservation(reservation: ReservationDTO) {
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(
-                Intent.EXTRA_TEXT,
-                "Salut! Avem rezervare in data de ${reservation.date} de la ora ${reservation.startHour}" +
-                        "pana la ora ${reservation.endHour}. Id-ul rezervarii este ${reservation.uuid}"
-            )
-            type = "text/plain"
-        }
-
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        startActivity(shareIntent)
-    }
-
     private fun performInitialServerRequest() {
-        profileViewModel.getReservations()
-        profileViewModel.getCourts()
+        reservationsViewModel.getReservations()
+        reservationsViewModel.getCourts()
     }
 
     private fun startAuthActivity() {

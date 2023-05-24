@@ -24,12 +24,21 @@
             tools:text="Court" />
 
         <TextView
-            android:id="@+id/address_text_view"
+            android:id="@+id/user_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/court_name_text_view"
+            tools:text="Customer: Iulian" />
+
+        <TextView
+            android:id="@+id/address_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_name_text_view"
             tools:text="Cornesti" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,13 +87,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/date_reservation_layout"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/cancel"/>
-
-    <Button
-        android:id="@+id/share_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/date_reservation_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/share"/>
+        android:text="@string/cancel"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

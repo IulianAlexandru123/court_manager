@@ -1,4 +1,4 @@
-package com.utcluj.courtreserver.ui.profile
+package com.utcluj.courtreserver.ui.admin_reservations
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class ProfileViewModel : ViewModel() {
+class AdminReservationsViewModel : ViewModel() {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
 
@@ -31,23 +31,23 @@ class ProfileViewModel : ViewModel() {
     val deleteReservationResult: SharedFlow<Boolean> = _deleteReservationResult.asStateFlow()
 
     fun getReservations() {
-        val userId = firebaseAuth.currentUser?.uid ?: return
-        db.collection("reservations").whereEqualTo("user_id", userId).get().addOnSuccessListener {
-            val reservations = it.documents.mapNotNull { doc ->
-                val courtUuid = doc.data?.get("court_id") as String
-                val date = doc.data?.get("date") as String
-                val startHour = doc.data?.get("start_hour") as String
-                val endHour = doc.data?.get("end_hour") as String
-                val customerUuid = doc.data?.get("user_id") as String
+        db.collection("reservations").get().addOnSuccessListener { reservationQuery ->
+            val reservations = reservationQuery.documents.map { reservation ->
+                val courtUuid = reservation.data?.get("court_id") as String
+                val date = reservation.data?.get("date") as String
+                val startHour = reservation.data?.get("start_hour") as String
+                val endHour = reservation.data?.get("end_hour") as String
+                val customerUuid = reservation.data?.get("user_id") as String
 
-                ReservationDTO(doc.id, courtUuid, date, startHour, endHour,customerUuid)
+                ReservationDTO(reservation.id, courtUuid, date, startHour, endHour, customerUuid)
             }
             _reservationList.value = reservations
         }
     }
 
     fun getCourts() {
-        db.collection("courts").get().addOnSuccessListener {
+        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        db.collection("courts").whereEqualTo("ownerUid", currentUserUid).get().addOnSuccessListener {
             val courts = it.documents.map { doc ->
                 val courtName = doc.data?.get("name") as String
                 val courtLat = doc.data?.get("lat") as Double
@@ -56,6 +56,7 @@ class ProfileViewModel : ViewModel() {
 
                 CourtDTO(doc.id, courtName, courtLong, courtLat, pricePerHour)
             }
+
             _courtList.value = courts
         }
     }
